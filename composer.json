@@ -1,0 +1,14 @@
+{
+    "name": "rafae/stormwind",
+    "description": "Tools for facial matchin using AWS Rekognition",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Stormwind\\": "src/Stormwind"
+        }
+    },
+    "require-dev": {
+        "php": ">=8.0"
+    }
+}
