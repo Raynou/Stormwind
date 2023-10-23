@@ -1,5 +1,5 @@
 {
-    "name": "rafae/stormwind",
+    "name": "aws-project/stormwind",
     "description": "Tools for facial matchin using AWS Rekognition",
     "type": "library",
     "license": "MIT",
@@ -10,5 +10,8 @@
     },
     "require-dev": {
         "php": ">=8.0"
+    },
+    "require": {
+        "vlucas/phpdotenv": "^5.5"
     }
 }
