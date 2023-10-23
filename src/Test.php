@@ -1,5 +1,5 @@
 <?php
-namespace Bar\Stormwind;
+namespace Stormwind;
 
 final class Test {
     public static function foo(){
