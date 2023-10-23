@@ -7,8 +7,5 @@
         "psr-4": {
             "Stormwind\\": "src/Stormwind"
         }
-    },
-    "require-dev": {
-        "php": ">=8.0"
     }
 }
