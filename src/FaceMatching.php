@@ -1,17 +1,11 @@
 <?php
-require 'vendor/autoload.php'; // Asegúrate de cargar el autoloader de Composer
+namespace Stormwind;
 
 use Aws\Rekognition\RekognitionClient;
 use Aws\Rekognition\RekognitionException;
+use Dotenv\Dotenv;
 
 final class FaceMatching {
-
-    static function loadEnv() {
-        echo __DIR__;
-        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-        $dotenv->load();
-    }
-
     /**
      * Compara la similitud entre dos imágenes con la ayuda de AWS Rekognition.
      *
@@ -23,7 +17,7 @@ final class FaceMatching {
     static function compareFaces($photoTarget, $photoSource) {
         $client = new RekognitionClient([
             'version'     => 'latest',
-            'region'      => getenv('AWS_REGION'), // Asegúrate de cargar tus credenciales y configuración a través de dotenv u otro método.
+            'region'      => getenv('AWS_REGION'),
             'credentials' => [
                 'key'    => getenv('AWS_PUBLIC_KEY'),
                 'secret' => getenv('AWS_SECRET_KEY'),
