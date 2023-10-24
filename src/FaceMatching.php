@@ -1,11 +1,11 @@
-<?php
+<?php declare(strict_types = 1);
 namespace Stormwind;
 
 use Aws\Rekognition\RekognitionClient;
 use Aws\Rekognition\RekognitionException;
-use Dotenv\Dotenv;
 
 final class FaceMatching {
+
     /**
      * Compara la similitud entre dos imágenes con la ayuda de AWS Rekognition.
      *
@@ -14,13 +14,14 @@ final class FaceMatching {
      *
      * @return bool Devuelve un booleano que determina si es la misma persona o no.
      */
-    static function compareFaces($photoTarget, $photoSource) {
+    public static function compareFaces($photoTarget, $photoSource) {
+
         $client = new RekognitionClient([
             'version'     => 'latest',
-            'region'      => getenv('AWS_REGION'),
+            'region'      => $_ENV['AWS_REGION'],
             'credentials' => [
-                'key'    => getenv('AWS_PUBLIC_KEY'),
-                'secret' => getenv('AWS_SECRET_KEY'),
+                'key'    => $_ENV['AWS_PUBLIC_KEY'],
+                'secret' => $_ENV['AWS_SECRET_KEY'],
             ],
         ]);
 

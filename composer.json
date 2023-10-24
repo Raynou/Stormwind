@@ -8,10 +8,15 @@
             "Stormwind\\": "src/"
         }
     },
+    "scripts": {
+        "test": "./vendor/bin/phpunit tests"
+    },
     "require-dev": {
-        "php": ">=8.0"
+        "php": ">=8.0",
+        "phpunit/phpunit": "9.6",
+        "vlucas/phpdotenv": "^5.5"
     },
     "require": {
-        "vlucas/phpdotenv": "^5.5"
+        "aws/aws-sdk-php": "^3.283"
     }
 }
