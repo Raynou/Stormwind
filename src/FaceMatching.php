@@ -7,14 +7,16 @@ use Aws\Rekognition\RekognitionException;
 final class FaceMatching {
 
     /**
-     * Compara la similitud entre dos imágenes con la ayuda de AWS Rekognition.
+     * Compares the similarity between two images with AWS Rekognition help. The function uses two images for do it, the target image and the source image, the
+     * first one is the image that will be serve as a reference and the second is the image that will be compared with the first one.
      *
-     * @param string $photoTarget La URL de la foto del perfil del usuario en Moodle.
-     * @param string $photoSource La URL de la foto tomada en el inicio de sesión.
+     * @param string $photoTarget The file path of the target image
+     * @param string $photoSource The file path of the source image
      *
-     * @return bool Devuelve un booleano que determina si es la misma persona o no.
+     * @return bool Returns a boolean that determines either is the same person or not.
      */
-    public static function compareFaces($photoTarget, $photoSource) {
+    public static function compareFaces($photoTarget, $photoSource) 
+    {
 
         $client = new RekognitionClient([
             'version'     => 'latest',
