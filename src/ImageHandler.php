@@ -2,24 +2,27 @@
 
 final class ImageHandler
 {
-
     /**
-     * Finds the profile image with a given ID in the Moodle file system
+     * Finds an image with a given ID in a URL. This function is util when you need download images from Moodle, like
+     * profile images from a user.
      *
-     * @param int $imageID The ID of the profile image in the user's Moodle database
+     * @param int $imageID The ID of the image
      * @return string The URL of the profile image
+     * 
+     * @example
+     * 
      */
-    public static function getProfileImageURL($imageID) 
+    public static function getImageURL($imageID, $imageName, $host = "localhost", $port = "80", $route = "moodle/pluginfile.php/5/user/icon/boost/f1?rev")
     {
         // Change port and host according to the route where Moodle is running
         $path = [
-            'host' => 'localhost',
-            'port' => '80',
-            'route' => 'moodle/pluginfile.php/5/user/icon/boost/f1?rev',
+            'host' => $host,
+            'port' => $port,
+            'route' => $route,
             'id' => $imageID,
         ];
 
-        $profileImagePath = "http://{$path['host']}:{$path['port']}/{$path['route']}={$path['id']";
+        $profileImagePath = "http://{$path['host']}:{$path['port']}/{$path['route']}={$path['id']}";
         $finalPath = getcwd() . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'profile.png';
 
         self::downloadImageFromURL($profileImagePath, $finalPath);
@@ -28,7 +31,7 @@ final class ImageHandler
     }
 
     /**
-     * Downloads an image from a given url and saves it in a given filename.
+     * Downloads an image from a given url and saves it as a given filename.
      * 
      * @param string $url The url of the image
      * @param string $filename The name that the downloaded resource will be have
