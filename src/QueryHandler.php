@@ -1,49 +1,49 @@
 <?php declare(strict_types = 1);
 
 namespace Stormwind;
-use Dotenv\Dotnenv;
+
+use mysqli;
+
 final class QueryHandler
 {
     public function __construct($path) {
-        $dotenv = Dotenv\Dotenv::createImmutable($path);
-        $dotenv->load();
-
         $dbDialect = $_ENV['DB_DIALECT'];
         $dbHost = $_ENV['DB_HOST'];
         $dbName = $_ENV['DB_NAME'];
         $dbUser = $_ENV['DB_USER'];
         $dbPass = $_ENV['DB_PASSWORD'];
 
-        try {
-            $this->conn = new PDO("$dbDialect:host=$dbHost;dbname=$dbName", $dbUser, $dbPass);
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch(PDOException $e) {
-            echo "Connection failed: " . $e->getMessage();
+        $this->conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
+
+        if ($this->conn->connect_error) {
+            die("Connection failed: " . $this->conn->connect_error);
         }
     }
 
     function getUserPicture($email)
     {
         $stmt = $this->conn->prepare("SELECT picture FROM mdl_user WHERE email like ?");
-        $stmt->execute([$email]);
-        $res = $stmt->fetch();
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $res = $stmt->get_result()->fetch_assoc();
         return $res ? $res['picture'] : null;
     }
 
     function getUserId($email) 
     {
         $stmt = $this->conn->prepare("SELECT id FROM mdl_user WHERE email like ?");
-        $stmt->execute([$email]);
-        $res = $stmt->fetch();
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $res = $stmt->get_result()->fetch_assoc();
         return $res ? $res['id'] : null;
     }
 
     function getUserPassword($email) 
     {
         $stmt = $this->conn->prepare("SELECT password FROM mdl_user WHERE email like ?");
-        $stmt->execute([$email]);
-        $res = $stmt->fetch();
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $res = $stmt->get_result()->fetch_assoc();
         return $res ? $res['password'] : null;
     }
-
 }
