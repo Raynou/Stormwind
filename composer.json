@@ -9,14 +9,14 @@
         }
     },
     "scripts": {
-        "test": "./vendor/bin/phpunit tests",
-        "vlucas/phpdotenv": "^5.5"
+        "test": "./vendor/bin/phpunit tests"
     },
     "require-dev": {
         "php": ">=8.0",
         "phpunit/phpunit": "9.6"
     },
     "require": {
-        "aws/aws-sdk-php": "^3.283"
+        "aws/aws-sdk-php": "^3.283",
+        "vlucas/phpdotenv": "^5.5"
     }
 }
