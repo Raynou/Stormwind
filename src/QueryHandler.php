@@ -1,8 +1,8 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Stormwind;
-
-class QueryHandler
+use Dotenv\Dotnenv;
+final class QueryHandler
 {
     public function __construct($path) {
         $dotenv = Dotenv\Dotenv::createImmutable($path);
