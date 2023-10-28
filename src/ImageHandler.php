@@ -66,7 +66,8 @@ final class ImageHandler
     public static function base64ToImage($uri, $path)
     {
         $image = fopen($path, "wb"); 
-        fwrite($image, base64_decode($uri) ); 
+        $uri = explode(',', $uri);
+        fwrite($image, base64_decode($uri[1])); 
         fclose($image); 
     }
 
