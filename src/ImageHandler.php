@@ -2,19 +2,27 @@
 
 namespace Stormwind;
 
+/**
+ * Utilities for handling images in the Moodle File System.
+ */
+
 final class ImageHandler
 {
     /**
-     * Finds an image with a given ID in a URL. This function is util when you need download images from Moodle, like
-     * profile images from a user.
+     * Finds an image with a given ID in a URL and saves it in the `tmp` folder.
+     * This function is useful when you need to download images from Moodle, such as
+     * user's profile images.
      *
-     * @param int $imageID The ID of the image
-     * @return string The URL of the profile image
+     * @param int $imageID The ID of the image.
+     * @param string $imageName The name that the image will have when it'll downloaded.
+     * @param string $host The host where your Moodle installation is running.
+     * @param string $port The port where your Moodle installation is running. This parameter can be empty. 
+     * @param string $route The URL where the function will find the image. By default, this parameter has the value for the user profile images.
+     * @return string The URL of the profile image.
      * 
      */
-    public static function getImageFromURL($imageID, $imageName, $host = "localhost", $port = "80", $route = "moodle/pluginfile.php/5/user/icon/boost/f1?rev")
+    public static function getImageFromURL($imageID, $imageName = "profile.png", $host = "localhost", $port = "80", $route = "moodle/pluginfile.php/5/user/icon/boost/f1?rev")
     {
-        // Change port and host according to the route where Moodle is running
         $path = [
             'host' => $host,
             'port' => $port,
@@ -22,8 +30,17 @@ final class ImageHandler
             'id' => $imageID,
         ];
 
-        $profileImagePath = "http://{$path['host']}:{$path['port']}/{$path['route']}={$path['id']}";
-        $finalPath = getcwd() . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'profile.png';
+        // In case that isn't necessary specify the port
+        if($port === NULL || $port === "")
+        {
+            $profileImagePath = "http://{$path['host']}/{$path['route']}={$path['id']}";
+        }
+        else
+        {
+            $profileImagePath = "http://{$path['host']}:{$path['port']}/{$path['route']}={$path['id']}";
+        }
+
+        $finalPath = getcwd() . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $imageName;
 
         self::downloadImageFromURL($profileImagePath, $finalPath);
 
@@ -31,10 +48,10 @@ final class ImageHandler
     }
 
     /**
-     * Downloads an image from a given url and saves it as a given filename.
+     * Downloads an image from a given URL and saves it as a given name.
      * 
      * @param string $url The url of the image
-     * @param string $filename The name that the downloaded resource will be have
+     * @param string $filename The name that the downloaded resource will have
      */
     private static function downloadImageFromURL($url, $filename)
     {
@@ -46,7 +63,8 @@ final class ImageHandler
 
         $response = curl_exec($ch);
 
-        if (curl_errno($ch)) {
+        if (curl_errno($ch)) 
+        {
             echo 'Error: ' . curl_error($ch);
         }
 

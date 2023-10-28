@@ -5,7 +5,11 @@ namespace Stormwind;
 use Aws\Rekognition\RekognitionClient;
 use Aws\Rekognition\RekognitionException;
 
-final class FaceMatching {
+/**
+ * Utilities for face analysis using AWS Rekognition, such face comparasion or face detection.
+ */
+
+final class FaceAnalyzer {
 
     /**
      * Compares the similarity between two images with AWS Rekognition help. The function uses two images for do it, the target image and the source image, the
@@ -14,7 +18,7 @@ final class FaceMatching {
      * @param string $photoTarget The file path of the target image
      * @param string $photoSource The file path of the source image
      *
-     * @return bool Returns a boolean that determines either is the same person or not.
+     * @return bool  A boolean that determines either is the same person or not.
      */
     public static function compareFaces($photoTarget, $photoSource) 
     {
@@ -28,7 +32,8 @@ final class FaceMatching {
             ],
         ]);
 
-        try {
+        try 
+        {
             $result = $client->compareFaces([
                 'SimilarityThreshold' => 80,
                 'SourceImage' => [
@@ -40,7 +45,9 @@ final class FaceMatching {
             ]);
 
             return count($result['FaceMatches']) !== 0 && $result['FaceMatches'][0]['Similarity'] > 80;
-        } catch (RekognitionException $e) {
+        } 
+        catch (RekognitionException $e) 
+        {
             echo 'Error: ' . $e->getMessage();
         }
     }
