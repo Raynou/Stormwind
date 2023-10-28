@@ -55,4 +55,19 @@ final class ImageHandler
 
         curl_close($ch);
     }
+
+    /**
+     * Converts a base64 string to an image.
+     * 
+     * @param string $uri The base64 string representing the image.
+     * @param string $path The path where the new image will be saved.
+     * 
+     */
+    public static function base64ToImage($uri, $path)
+    {
+        $image = fopen($path, "wb"); 
+        fwrite($image, base64_decode($uri) ); 
+        fclose($image); 
+    }
+
 }
