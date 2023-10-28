@@ -6,7 +6,7 @@ use mysqli;
 
 final class QueryHandler
 {
-    public function __construct($path) {
+    public function __construct() {
         $dbDialect = $_ENV['DB_DIALECT'];
         $dbHost = $_ENV['DB_HOST'];
         $dbName = $_ENV['DB_NAME'];
