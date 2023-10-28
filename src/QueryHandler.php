@@ -1,5 +1,7 @@
 <?php
 
+namespace Stormwind;
+
 class QueryHandler
 {
     public function __construct($path) {

@@ -1,5 +1,7 @@
 <?php
 
+namespace Stormwind;
+
 final class ImageHandler
 {
     /**
@@ -9,10 +11,8 @@ final class ImageHandler
      * @param int $imageID The ID of the image
      * @return string The URL of the profile image
      * 
-     * @example
-     * 
      */
-    public static function getImageURL($imageID, $imageName, $host = "localhost", $port = "80", $route = "moodle/pluginfile.php/5/user/icon/boost/f1?rev")
+    public static function getImageFromURL($imageID, $imageName, $host = "localhost", $port = "80", $route = "moodle/pluginfile.php/5/user/icon/boost/f1?rev")
     {
         // Change port and host according to the route where Moodle is running
         $path = [
@@ -36,7 +36,7 @@ final class ImageHandler
      * @param string $url The url of the image
      * @param string $filename The name that the downloaded resource will be have
      */
-    public static function downloadImageFromURL($url, $filename)
+    private static function downloadImageFromURL($url, $filename)
     {
         $ch = curl_init($url);
 
