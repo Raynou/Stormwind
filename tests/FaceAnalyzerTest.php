@@ -1,10 +1,10 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Stormwind\FaceMatching;
+use Stormwind\FaceAnalyzer;
 use Dotenv\Dotnenv;
 
-final class FaceMatchingTest extends TestCase {
+final class FaceAnalyzerTest extends TestCase {
 
     public function testLoadEnv() {
         $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -21,8 +21,8 @@ final class FaceMatchingTest extends TestCase {
         $source = __DIR__ . "/public/source.jpg";
         $rock = __DIR__ . "/public/rock.jpg";
 
-        $this->assertTrue(FaceMatching::compareFaces($target, $source));
-        $this->assertFalse(FaceMatching::compareFaces($target, $rock));
+        $this->assertTrue(FaceAnalyzer::compareFaces($target, $source));
+        $this->assertFalse(FaceAnalyzer::compareFaces($target, $rock));
 
     }
 }
