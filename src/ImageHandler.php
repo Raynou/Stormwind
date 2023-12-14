@@ -84,4 +84,14 @@ final class ImageHandler
         fclose($image); 
     }
 
+    /**
+     * Converts an image into base64 string
+     * @param $path The image path
+     */
+
+    public static function imageToBase64($path)
+    {
+        return file_get_contents($path);
+    }
+
 }

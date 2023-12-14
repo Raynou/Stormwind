@@ -51,4 +51,32 @@ final class FaceAnalyzer {
             echo 'Error: ' . $e->getMessage();
         }
     }
+
+    /**
+     * Uses the AWS Rekognition API to detect faces in a photo, returns an array of feelings of the first person detected in that one.
+     * 
+     * @param string @photo A base64
+     * 
+     * @return array An array with the value of each feeling from a person in the photo.
+     */
+    public static function detectFeelings($photo)
+    {
+        $client = new RekognitionClient([
+            'version'     => 'latest',
+            'region'      => $_ENV['AWS_REGION'],
+            'credentials' => [
+                'key'    => $_ENV['AWS_PUBLIC_KEY'],
+                'secret' => $_ENV['AWS_SECRET_KEY'],
+            ],
+        ]);
+
+        $result = $client->detectFaces([
+            "Attributes" => ["EMOTIONS"],
+            "Image" => [
+                "Bytes" => $photo
+            ]
+        ]);
+
+        return $result["FaceDetails"][0]["Emotions"];
+    }
 }

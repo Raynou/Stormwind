@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use Stormwind\FaceAnalyzer;
+use Stormwind\ImageHandler;
 use Dotenv\Dotnenv;
 
 final class FaceAnalyzerTest extends TestCase {
@@ -23,6 +24,25 @@ final class FaceAnalyzerTest extends TestCase {
 
         $this->assertTrue(FaceAnalyzer::compareFaces($target, $source));
         $this->assertFalse(FaceAnalyzer::compareFaces($target, $rock));
+
+    }
+
+    public function testDetectFeelings() {
+
+        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+        $dotenv->load();
+
+        $rock = __DIR__ . "/public/rock.jpg";
+        $sadHappy = __DIR__ . "/public/sadAndHappy.jpg";
+
+        $sadHappyUri = ImageHandler::imageToBase64($sadHappy);
+        $sadHappyRes = FaceAnalyzer::detectFeelings($sadHappyUri)[0]["Type"];
+
+        $rockUri = ImageHandler::imageToBase64($rock);
+        $rockRes = FaceAnalyzer::detectFeelings($rockUri)[0]["Type"];
+
+        $this->assertEquals($sadHappyRes,"SAD");
+        $this->assertEquals($rockRes,"HAPPY");
 
     }
 }
