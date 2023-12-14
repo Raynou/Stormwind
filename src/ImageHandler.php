@@ -14,16 +14,15 @@ final class ImageHandler
      * user's profile images.
      *
      * @param int $imageID The ID of the image.
-     * @param string $imageName The name that the image will have when it'll downloaded.
+     * @param string $path The path where the image will be saved. This value includes the name of the image as well.
      * @param string $host The host where your Moodle installation is running.
      * @param string $port The port where your Moodle installation is running. This parameter can be empty. 
      * @param string $route The URL where the function will find the image. By default, this parameter has the value for the user profile images.
-     * @return string The URL of the profile image.
      * 
      */
-    public static function getImageFromURL($imageID, $imageName = "profile.png", $host = "localhost", $port = "80", $route = "moodle/pluginfile.php/5/user/icon/boost/f1?rev")
+    public static function getImageFromURL($imageID, $path, $host = "localhost", $port = "80", $route = "moodle/pluginfile.php/5/user/icon/boost/f1?rev")
     {
-        $path = [
+        $URL = [
             'host' => $host,
             'port' => $port,
             'route' => $route,
@@ -33,18 +32,14 @@ final class ImageHandler
         // In case that isn't necessary specify the port
         if($port === NULL || $port === "")
         {
-            $profileImagePath = "http://{$path['host']}/{$path['route']}={$path['id']}";
+            $profileImageURL = "http://{$URL['host']}/{$URL['route']}={$URL['id']}";
         }
         else
         {
-            $profileImagePath = "http://{$path['host']}:{$path['port']}/{$path['route']}={$path['id']}";
+            $profileImageURL = "http://{$URL['host']}:{$path['port']}/{$URL['route']}={$URL['id']}";
         }
 
-        $finalPath = getcwd() . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $imageName;
-
-        self::downloadImageFromURL($profileImagePath, $finalPath);
-
-        return $finalPath;
+        self::downloadImageFromURL($profileImageURL, $path);
     }
 
     /**
