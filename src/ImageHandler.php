@@ -91,7 +91,7 @@ final class ImageHandler
 
     public static function imageToBase64($path)
     {
-        return file_get_contents($path);
+        return base64_encode(file_get_contents($path));
     }
 
 }

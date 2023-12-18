@@ -7,12 +7,7 @@ use Dotenv\Dotnenv;
 
 final class FaceAnalyzerTest extends TestCase {
 
-    public function testLoadEnv() {
-        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-        $dotenv->load();
-        $this->assertSame($_ENV["TEST"], "TEST");
-    }
-
+    #region FaceAnalyzer::compareFaces tests
     public function testCompareFaces() {
 
         $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -26,7 +21,9 @@ final class FaceAnalyzerTest extends TestCase {
         $this->assertFalse(FaceAnalyzer::compareFaces($target, $rock));
 
     }
+    #endregion
 
+    #region FaceAnalyzer::detectFeelings tests
     public function testDetectFeelings() {
 
         $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -45,4 +42,5 @@ final class FaceAnalyzerTest extends TestCase {
         $this->assertEquals($rockRes,"HAPPY");
 
     }
+    #endregion
 }

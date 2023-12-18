@@ -1,6 +1,7 @@
-<?php declare(strict_types = 1);
+<?php
 
 namespace Stormwind;
+use Stormwind\UserNotFoundException;
 
 use mysqli;
 
@@ -77,5 +78,27 @@ final class QueryHandler
         $stmt->execute();
         $res = $stmt->get_result()->fetch_assoc();
         return $res ? $res['password'] : null;
+    }
+
+    /**
+     * Gets `username`, `firstname`, `lastname` and `email` of user from the Moodle database with a given id.
+     * @param int $id The user ID
+     * 
+     * @throws UserNotFoundException if the user with given id doesn't exist in the db. 
+     * @return array An asociative array with the user information.
+     */
+    function getUserInfoWithID($id) 
+    {   
+        $stmt = $this->conn->prepare("SELECT username, firstname, lastname, email FROM mdl_user WHERE id like ?");
+        $stmt->bind_param("s", $id);
+        $stmt->execute();
+        $res = $stmt->get_result()->fetch_assoc();
+
+        if($res === null)
+        {
+            throw new UserNotFoundException("User with id: " . $id ." couldn't be find");
+        }
+
+        return $res;
     }
 }

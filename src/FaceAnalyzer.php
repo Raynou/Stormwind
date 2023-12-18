@@ -73,7 +73,7 @@ final class FaceAnalyzer {
         $result = $client->detectFaces([
             "Attributes" => ["EMOTIONS"],
             "Image" => [
-                "Bytes" => $photo
+                "Bytes" => base64_decode($photo)
             ]
         ]);
 
