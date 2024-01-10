@@ -101,4 +101,15 @@ final class QueryHandler
 
         return $res;
     }
+
+    function insertAnalysis($analysis)
+    {
+        $stmt = $this->conn->prepare("INSERT INTO block_simple_camera_details (user_id, timestamp, page) VALUES (?, ?, ?)");
+        $stmt->bind_param("iss", $analysis->user_id, $analysis->timestamp, $analysis->sentiment);
+        $stmt->execute();
+        $detailsId = $stmt->insert_id();
+        $stmt = $this->conn->prepare("INSERT INTO block_simple_camera_analysis (sentiment, details) VALUES (?, ?)");
+        $stmt = bind_param("ss", $analysis->sentiment, $detailsId);
+        $stmt->execute();
+    }
 }
