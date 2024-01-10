@@ -105,25 +105,29 @@ final class QueryHandler
 
     function insertAnalysis($analysis)
     {
-        try {
-            $stmt = $this->conn->prepare("INSERT INTO mdl_block_simple_camera_details (user_id, timestamp, page) VALUES (?, ?, ?)");
-            $bindStatus = $stmt->bind_param("iss", $analysis->user_id, $analysis->timestamp, $analysis->page);
-            if(!$bindStatus)
-            {
-                throw Exception("Error binding SQL statements params: " . $analysis->user_id . ", " . $analysis->timestamp, ", " . $analysis->page);
-            }
-            $stmt->execute();
+        $user_id = intval($analysis->user_id);
+        $timestamp = $analysis->timestamp;
+        $page = $analysis->page;
 
-            $detailsId = $stmt->insert_id();
-            $stmt = $this->conn->prepare("INSERT INTO mdl_block_simple_camera_analysis (sentiment, details) VALUES (?, ?)");
-            $stmt = bind_param("si", $analysis->sentiment, $detailsId);
-            if(!$bindStatus)
-            {
-                throw Exception("Error binding SQL statements params: " . $analysis->sentiment . ", " . $detailsId);
-            }
-            $stmt->execute();
-        } catch (Exception $e) {
-            throw $e;
+        $stmt = $this->conn->prepare("INSERT INTO mdl_block_simplecamera_details (user_id, timestamp, page) VALUES (?, ?, ?)");
+
+        $bindStatus = $stmt->bind_param("iss", $user_id, $timestamp, $page);
+        if (!$bindStatus) {
+            throw new Exception("Error binding SQL statements params: " . $analysis->user_id . ", " . $analysis->timestamp . ", " . $analysis->page);
         }
+
+        $stmt->execute();
+
+        $detailsId = $stmt->insert_id;
+        $sentiment = $analysis->sentiment;
+
+        $stmt = $this->conn->prepare("INSERT INTO mdl_block_simplecamera_analysis (sentiment, details) VALUES (?, ?)");
+
+        $bindStatus = $stmt->bind_param("si", $sentiment, $detailsId);
+        if (!$bindStatus) {
+            throw new Exception("Error binding SQL statements params: " . $analysis->sentiment . ", " . $detailsId);
+        }
+
+        $stmt->execute();
     }
 }
