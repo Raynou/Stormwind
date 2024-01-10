@@ -2,6 +2,7 @@
 
 namespace Stormwind;
 use Stormwind\UserNotFoundException;
+use Exception;
 
 use mysqli;
 
@@ -106,11 +107,20 @@ final class QueryHandler
     {
         try {
             $stmt = $this->conn->prepare("INSERT INTO mdl_block_simple_camera_details (user_id, timestamp, page) VALUES (?, ?, ?)");
-            $stmt->bind_param("iss", $analysis->user_id, $analysis->timestamp, $analysis->sentiment);
+            $bindStatus = $stmt->bind_param("iss", $analysis->user_id, $analysis->timestamp, $analysis->page);
+            if(!$bindStatus)
+            {
+                throw Exception("Error binding SQL statements params: " . $analysis->user_id . ", " . $analysis->timestamp, ", " . $analysis->page);
+            }
             $stmt->execute();
+
             $detailsId = $stmt->insert_id();
             $stmt = $this->conn->prepare("INSERT INTO mdl_block_simple_camera_analysis (sentiment, details) VALUES (?, ?)");
-            $stmt = bind_param("ss", $analysis->sentiment, $detailsId);
+            $stmt = bind_param("si", $analysis->sentiment, $detailsId);
+            if(!$bindStatus)
+            {
+                throw Exception("Error binding SQL statements params: " . $analysis->sentiment . ", " . $detailsId);
+            }
             $stmt->execute();
         } catch (Exception $e) {
             throw $e;
