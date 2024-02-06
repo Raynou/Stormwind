@@ -36,7 +36,7 @@ final class ImageHandler
         }
         else
         {
-            $profileImageURL = "http://{$URL['host']}:{$path['port']}/{$URL['route']}={$URL['id']}";
+            $profileImageURL = "http://{$URL['host']}:{$URL['port']}/{$URL['route']}={$URL['id']}";
         }
 
         self::downloadImageFromURL($profileImageURL, $path);
