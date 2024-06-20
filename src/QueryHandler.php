@@ -15,14 +15,24 @@ final class QueryHandler
     /**
      * This constructor gets the information about your Moodle Database from the enviorment variables and creates a connection
      * with `mysqli`.
+     * @param iterable $credentials An iterable with the credentials to connect to the database. If null, the constructor will use the enviorment variables.
      */
-    public function __construct() 
+    public function __construct(?iterable $credentials = null) 
     {
-        $dbDialect = $_ENV['DB_DIALECT'];
-        $dbHost = $_ENV['DB_HOST'];
-        $dbName = $_ENV['DB_NAME'];
-        $dbUser = $_ENV['DB_USER'];
-        $dbPass = $_ENV['DB_PASSWORD'];
+        // Method overloading
+        if(credentials == null) {
+            $dbDialect = $_ENV['DB_DIALECT'];
+            $dbHost = $_ENV['DB_HOST'];
+            $dbName = $_ENV['DB_NAME'];
+            $dbUser = $_ENV['DB_USER'];
+            $dbPass = $_ENV['DB_PASSWORD'];
+        } else {
+            $dbDialect = $credentials['DB_DIALECT'];
+            $dbHost = $credentials['DB_HOST'];
+            $dbName = $credentials['DB_NAME'];
+            $dbUser = $credentials['DB_USER'];
+            $dbPass = $credentials['DB_PASSWORD'];
+        }
 
         $this->conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
 
