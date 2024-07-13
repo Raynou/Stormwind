@@ -20,18 +20,18 @@ final class QueryHandler
     public function __construct(?iterable $credentials = null) 
     {
         // Method overloading
-        if(credentials == null) {
+        if($credentials == null) {
             $dbDialect = $_ENV['DB_DIALECT'];
             $dbHost = $_ENV['DB_HOST'];
             $dbName = $_ENV['DB_NAME'];
             $dbUser = $_ENV['DB_USER'];
             $dbPass = $_ENV['DB_PASSWORD'];
         } else {
-            $dbDialect = $credentials['DB_DIALECT'];
-            $dbHost = $credentials['DB_HOST'];
-            $dbName = $credentials['DB_NAME'];
-            $dbUser = $credentials['DB_USER'];
-            $dbPass = $credentials['DB_PASSWORD'];
+            $dbDialect = $credentials['db_dialect'];
+            $dbHost = $credentials['db_host'];
+            $dbName = $credentials['db_name'];
+            $dbUser = $credentials['db_user'];
+            $dbPass = $credentials['db_password'];
         }
 
         $this->conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName);

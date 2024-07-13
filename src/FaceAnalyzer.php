@@ -24,7 +24,7 @@ final class FaceAnalyzer {
      */
     public static function compareFaces($photoTarget, $photoSource) 
     {
-        $client = getClient();
+        $client = slef::getClient();
 
         try 
         {
@@ -55,7 +55,7 @@ final class FaceAnalyzer {
      */
     public static function detectFeelings($photo)
     {
-        $client = getClient();
+        $client = self::getClient();
 
         $result = $client->detectFaces([
             "Attributes" => ["EMOTIONS"],
@@ -74,32 +74,26 @@ final class FaceAnalyzer {
      */
     public static function setCredentials(iterable $credentials) {
 
-        // Validate array's length
-        if($credentials.length !== 3) {
-            throw new \InvalidArgumentException("The credentials array must have 3 elements.");
-        }
-
         // Validate array's values
-        $i = 0;
-        $validNames = ["AWS_REGION", "AWS_PUBLIC_KEY", "AWS_SECRET_KEY"];
+        $validNames = ["aws_region", "aws_public_key", "aws_secret_key"];
+        $filteredCredentials = [];
         foreach($credentials as $key => $value) {
+            if($key != $validNames[0] && $key != $validNames[1] && $key != $validNames[2]) {
+                continue;
+            }
             if($value == null) {
                 throw new \InvalidArgumentException("The credentials array must not have null values.");
             }
-            if($key !== $validNames[$i]) {
-                throw new \InvalidArgumentException("The credentials array must have the following keys: AWS_REGION, AWS_PUBLIC_KEY, AWS_SECRET_KEY.");
-            }
-            $i++;
+            $filteredCredentials[$key] = $value;
         }
-
-        self::$credentials = $credentials;
+        self::$credentials = $filteredCredentials;
     }
 
     /**
      * Retrieves an AWS client for the Rekognition service.
      */
     private static function getClient() {
-        if($credentials == null) {
+        if(self::$credentials == null) {
             $client = new RekognitionClient([
                 'version'     => 'latest',
                 'region'      => $_ENV['AWS_REGION'],
@@ -111,10 +105,10 @@ final class FaceAnalyzer {
         } else {
             $client = new RekognitionClient([
                 'version'     => 'latest',
-                'region'      => $credentials['AWS_REGION'],
+                'region'      => self::$credentials['aws_region'],
                 'credentials' => [
-                    'key'    => $credentials['AWS_PUBLIC_KEY'],
-                    'secret' => $credentials['AWS_SECRET_KEY'],
+                    'key'    => self::$credentials['aws_public_key'],
+                    'secret' => self::$credentials['aws_secret_key'],
                 ],
             ]);
         }
