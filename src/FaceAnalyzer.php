@@ -24,7 +24,7 @@ final class FaceAnalyzer {
      */
     public static function compareFaces($photoTarget, $photoSource) 
     {
-        $client = slef::getClient();
+        $client = self::getClient();
 
         try 
         {
